@@ -85,6 +85,7 @@ class DrivingSchoolAPITester:
         timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
         email = f"test_user_{timestamp}@example.com"
         
+        # The registration endpoint expects form data, not JSON
         data = {
             "email": email,
             "password": "Test123!",
@@ -97,12 +98,15 @@ class DrivingSchoolAPITester:
             "state": "Alger"
         }
         
+        headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+        
         success, response = self.run_test(
             "Register User",
             "POST",
             "api/auth/register",
             200,
-            data=data
+            data=data,
+            headers=headers
         )
         
         if success and 'access_token' in response:
